@@ -7,5 +7,20 @@ export default async function deploy(signer, arbiter, beneficiary, value) {
     Escrow.bytecode,
     signer
   );
-  return factory.deploy(arbiter, beneficiary, { value });
+  const contract = await factory.deploy(arbiter, beneficiary, { value });
+
+  await fetch("http://localhost:1234/add_contract", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      address: contract.address,
+      arbiter,
+      beneficiary,
+      value: value.toString()
+    })
+  });
+
+  return contract;
 }
