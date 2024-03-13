@@ -14,6 +14,10 @@ function App() {
   const [escrows, setEscrows] = useState([]);
   const [account, setAccount] = useState();
   const [signer, setSigner] = useState();
+  const [ether, setEther] = useState("");
+  const wei = ether
+    ? ethers.utils.parseUnits(ether, "ether").toString()
+    : "";
 
   useEffect(() => {
     async function getAccounts() {
@@ -68,8 +72,13 @@ function App() {
         </label>
 
         <label>
-          Deposit Amount (in Wei)
-          <input type="text" id="wei" />
+          Deposit Amount (in ETH)
+          <input
+            type="text" id="eth"
+            value={ether}
+            onChange={(e) => setEther(e.target.value)}
+          />
+          <span id="wei">{wei} Wei</span>
         </label>
 
         <div
